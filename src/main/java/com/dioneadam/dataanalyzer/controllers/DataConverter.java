@@ -1,31 +1,27 @@
-package com.dioneadam.core.challenge.controllers;
+package com.dioneadam.dataanalyzer.controllers;
 
-import com.dioneadam.core.challenge.models.*;
-
+import com.dioneadam.dataanalyzer.managers.CustomerManager;
+import com.dioneadam.dataanalyzer.managers.SalesManager;
+import com.dioneadam.dataanalyzer.managers.SalesmanManager;
+import com.dioneadam.dataanalyzer.models.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.dioneadam.core.challenge.managers.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @Component
 public class DataConverter {
 
-    @Autowired
-    private CustomerManager customerManager;
+    private static final Logger logger = LoggerFactory.getLogger(DataConverter.class);
 
-    @Autowired
-    private SalesManager salesManager;
+    public DataWrapper convert(List<String> entrys) {
 
-    @Autowired
-    private SalesmanManager salesmanManager;
+        CustomerManager customerManager = new CustomerManager();
+        SalesManager salesManager = new SalesManager();
+        SalesmanManager salesmanManager = new SalesmanManager();
 
-    private static Logger logger = LoggerFactory.getLogger(DataConverter.class);
-
-    public void convert(List<String> entrys) {
         for (String entry : entrys) {
             try {
                 String separator = String.valueOf(entry.charAt(3));
@@ -47,6 +43,7 @@ public class DataConverter {
                 logger.error("error converting data entry: " + entry);
             }
         }
+        return new DataWrapper(customerManager, salesManager, salesmanManager);
     }
 
     private Salesman createSalesman(String[] entry) {

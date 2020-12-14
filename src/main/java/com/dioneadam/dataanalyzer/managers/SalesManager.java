@@ -1,19 +1,14 @@
-package com.dioneadam.core.challenge.managers;
+package com.dioneadam.dataanalyzer.managers;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import com.dioneadam.dataanalyzer.models.Sale;
+
+import java.util.*;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
-import com.dioneadam.core.challenge.models.Sale;
-
 public class SalesManager {
 
-    private List<Sale> sales;
+    private final List<Sale> sales;
 
     public SalesManager() {
         sales = new ArrayList<>();
@@ -23,12 +18,8 @@ public class SalesManager {
         return sales;
     }
 
-    public Boolean addSale(Sale sale) {
-        return sales.add(sale);
-    }
-
-    public void clearSales() {
-        sales.clear();
+    public void addSale(Sale sale) {
+        this.sales.add(sale);
     }
 
     public Optional<Integer> getIdOfTheMostExpensiveSale() {
@@ -44,8 +35,7 @@ public class SalesManager {
                 .collect(Collectors.groupingBy(Sale::getSalesmanName, Collectors.summingDouble(Sale::getSalePrice)));
 
         if (map.size() > 0) {
-            Entry<String, Double> worstSalesman = Collections.min(map.entrySet(),
-                    Comparator.comparing(Map.Entry::getValue));
+            Entry<String, Double> worstSalesman = Collections.min(map.entrySet(), Entry.comparingByValue());
 
             return Optional.of(worstSalesman.getKey());
         }

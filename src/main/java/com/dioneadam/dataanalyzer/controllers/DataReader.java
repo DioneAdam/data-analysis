@@ -1,4 +1,8 @@
-package com.dioneadam.core.challenge.controllers;
+package com.dioneadam.dataanalyzer.controllers;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -10,15 +14,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
-
 @Component
 public class DataReader {
 
     private static final String LINE_SPLIT = "(?=\\s[0-9]{3})";
-    private static Logger logger = LoggerFactory.getLogger(DataReader.class);
+    private static final Logger logger = LoggerFactory.getLogger(DataReader.class);
 
     public List<String> readFile(File file) {
         List<String> entrys = new ArrayList<>();

@@ -1,10 +1,10 @@
-package com.dioneadam.core.challenge.models;
+package com.dioneadam.dataanalyzer.models;
 
 public class Item {
 
-    private int id;
-    private int quantity;
-    private Double unityPrice;
+    private final int id;
+    private final int quantity;
+    private final Double unityPrice;
 
     public Item(int id, int quantity, Double unityPrice) {
         this.id = id;

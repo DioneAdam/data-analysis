@@ -1,11 +1,12 @@
-package com.dioneadam.core.challenge.models;
+package com.dioneadam.dataanalyzer.models;
 
 public class Salesman {
 
-    private final int ID = 1;
-    private String cpf;
-    private String name;
-    private Double salary;
+    private static final int ID = 1;
+
+    private final String cpf;
+    private final String name;
+    private final Double salary;
 
     public Salesman(String cpf, String name, Double salary) {
         this.cpf = cpf;
@@ -19,10 +20,6 @@ public class Salesman {
 
     public String getCpf() {
         return cpf;
-    }
-
-    public void setCpf(String cpf) {
-        this.cpf = cpf;
     }
 
     public String getName() {

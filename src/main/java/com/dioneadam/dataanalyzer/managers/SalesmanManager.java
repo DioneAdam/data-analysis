@@ -1,12 +1,13 @@
-package com.dioneadam.core.challenge.managers;
+package com.dioneadam.dataanalyzer.managers;
+
+import com.dioneadam.dataanalyzer.models.Salesman;
 
 import java.util.ArrayList;
 import java.util.List;
-import com.dioneadam.core.challenge.models.Salesman;
 
 public class SalesmanManager {
     
-    private List<Salesman> salesmen;
+    private final List<Salesman> salesmen;
 
     public SalesmanManager() {
         salesmen = new ArrayList<>();
@@ -16,12 +17,8 @@ public class SalesmanManager {
         return salesmen;
     }
 
-    public Boolean addSalesman(Salesman salesman) {
-       return salesmen.add(salesman);
-    }
-
-    public void clearSalesmen() {
-        salesmen.clear();
+    public void addSalesman(Salesman salesman) {
+       this.salesmen.add(salesman);
     }
 
 	public int amountOfSalesman() {

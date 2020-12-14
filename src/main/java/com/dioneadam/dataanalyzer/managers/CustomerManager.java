@@ -1,12 +1,13 @@
-package com.dioneadam.core.challenge.managers;
+package com.dioneadam.dataanalyzer.managers;
+
+import com.dioneadam.dataanalyzer.models.Customer;
 
 import java.util.ArrayList;
 import java.util.List;
-import com.dioneadam.core.challenge.models.Customer;;
 
 public class CustomerManager {
     
-    private List<Customer> customers;
+    private final List<Customer> customers;
 
     public CustomerManager() {
         customers = new ArrayList<>();
@@ -16,12 +17,7 @@ public class CustomerManager {
         return customers;
     }
 
-    public Boolean addCustomer(Customer customer) {
-       return customers.add(customer);
-    }
-
-    public void clearCustomers() {
-        customers.clear();
+    public void addCustomer(Customer customer) { this.customers.add(customer);
     }
 
 	public int amountOfClients() {

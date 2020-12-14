@@ -1,0 +1,5 @@
+app:
+  job:
+    scheduler:
+      delay: 5000
+      interval: 5000
