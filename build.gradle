@@ -1,27 +1,35 @@
-plugins {
-    id 'java'
-    id 'application'
+buildscript {
+    ext {
+        springBootVersion = '2.4.0'
+    }
 }
 
-run {
-    mainClassName = "com.dioneadam.core.desafio.Main"
+plugins {
+    id 'org.springframework.boot' version "${springBootVersion}"
+    id 'io.spring.dependency-management' version '1.0.10.RELEASE'
+    id 'java'
 }
+
+group = 'com.dioneadam'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
 
 repositories {
-	mavenCentral()
-    mavenLocal()
+    mavenCentral()
 }
 
-def springVersion = '5.1.8.RELEASE'
-def slf4jVersion = '1.7.12'
-def junitVersion = '4.12'
 dependencies {
-    compile([
-		"org.springframework:spring-core:${springVersion}",
-		"org.springframework:spring-context:${springVersion}",
-		"org.springframework:spring-beans:${springVersion}",
-		"org.springframework:spring-test:${springVersion}",
-        "org.slf4j:slf4j-jdk14:${slf4jVersion}"
-	])
-    testImplementation "junit:junit:${junitVersion}"
+    implementation 'org.springframework.boot:spring-boot-starter'
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: "org.junit.vintage", module: "junit-vintage-engine"
+    }
+}
+
+test {
+    useJUnitPlatform()
+}
+
+wrapper() {
+    gradleVersion = "6.6.1"
+    distributionUrl = distributionUrl.replace("bin", "all")
 }
