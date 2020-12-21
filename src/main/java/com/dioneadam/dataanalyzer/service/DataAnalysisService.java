@@ -1,10 +1,8 @@
-package com.dioneadam.dataanalyzer.controllers;
+package com.dioneadam.dataanalyzer.service;
 
 import com.dioneadam.dataanalyzer.configuration.AppConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.context.event.ApplicationReadyEvent;
-import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -16,19 +14,19 @@ import java.nio.file.Paths;
 import java.nio.file.WatchEvent;
 
 @Service
-public class DataAnalysis {
+public class DataAnalysisService {
 
     private final DirectoryWatcher watcher;
     private final DataReader dataReader;
-    private final DataConverter dataConverter;
+    private final ParseService parseService;
     private final DataWriter dataWriter;
 
-    private static final Logger logger = LoggerFactory.getLogger(DataAnalysis.class);
+    private static final Logger logger = LoggerFactory.getLogger(DataAnalysisService.class);
 
-    public DataAnalysis(DirectoryWatcher watcher, DataReader dataReader, DataConverter dataConverter, DataWriter dataWriter) {
+    public DataAnalysisService(DirectoryWatcher watcher, DataReader dataReader, ParseService dataConverter, DataWriter dataWriter) {
         this.watcher = watcher;
         this.dataReader = dataReader;
-        this.dataConverter = dataConverter;
+        this.parseService = dataConverter;
         this.dataWriter = dataWriter;
     }
 
@@ -38,7 +36,8 @@ public class DataAnalysis {
         createDirectories();
 
         dataReader.getAllFiles(AppConfig.INPUT_PATH).forEach(file -> {
-            dataWriter.writeDataReport(dataConverter.convert(dataReader.readFile(file)), file.getName().replaceAll(".dat", ""));
+            //List parsedData = parseService.parseLines(dataReader.readFile(file));
+            dataWriter.writeDataReport(parseService.parseLines(dataReader.readFile(file)), file.getName().replaceAll(".dat", ""));
         });
 
         logger.info("done fisrt data analysis");
@@ -58,7 +57,7 @@ public class DataAnalysis {
     }
 
     public void analyze(Path path, String fileName) {
-        dataWriter.writeDataReport(dataConverter.convert(dataReader.readFile(path.toFile())), fileName.replaceAll(".dat", ""));
+        dataWriter.writeDataReport(parseService.parseLines(dataReader.readFile(path.toFile())), fileName.replaceAll(".dat", ""));
     }
 
     private void createDirectories() {

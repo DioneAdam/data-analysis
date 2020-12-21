@@ -1,12 +1,17 @@
 package com.dioneadam.dataanalyzer.models;
 
+import java.math.BigDecimal;
+
 public class Item {
 
-    private final int id;
-    private final int quantity;
-    private final Double unityPrice;
+    private int id;
+    private int quantity;
+    private BigDecimal unityPrice;
 
-    public Item(int id, int quantity, Double unityPrice) {
+    public Item() {
+    }
+
+    public Item(int id, int quantity, BigDecimal unityPrice) {
         this.id = id;
         this.quantity = quantity;
         this.unityPrice = unityPrice;
@@ -16,16 +21,59 @@ public class Item {
         return id;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public int getQuantity() {
         return quantity;
     }
 
-    public Double getUnityPrice() {
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    public BigDecimal getUnityPrice() {
         return unityPrice;
     }
 
-    public Double getTotalPrice() {
-        return unityPrice * quantity;
+    public void setUnityPrice(BigDecimal unityPrice) {
+        this.unityPrice = unityPrice;
+    }
+
+    public BigDecimal getTotalPrice() {
+        return unityPrice.multiply(new BigDecimal(quantity));
+    }
+
+    public static Builder of() {
+        return new Builder();
+    }
+
+    public static final class Builder {
+        private Item item;
+
+        private Builder() {
+            item = new Item();
+        }
+
+        public Builder id(int id) {
+            item.setId(id);
+            return this;
+        }
+
+        public Builder quantity(int quantity) {
+            item.setQuantity(quantity);
+            return this;
+        }
+
+        public Builder unityPrice(BigDecimal unityPrice) {
+            item.setUnityPrice(unityPrice);
+            return this;
+        }
+
+        public Item build() {
+            return item;
+        }
     }
 
 }

@@ -1,4 +1,4 @@
-package com.dioneadam.dataanalyzer.controllers;
+package com.dioneadam.dataanalyzer.service;
 
 import com.dioneadam.dataanalyzer.configuration.AppConfig;
 import com.dioneadam.dataanalyzer.models.DataWrapper;

@@ -2,6 +2,7 @@ package com.dioneadam.dataanalyzer.managers;
 
 import com.dioneadam.dataanalyzer.models.Sale;
 
+import java.math.BigDecimal;
 import java.util.*;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
@@ -31,15 +32,18 @@ public class SalesManager {
     }
 
     public Optional<String> getWorstSalesmanEver() {
-        Map<String, Double> map = sales.stream()
-                .collect(Collectors.groupingBy(Sale::getSalesmanName, Collectors.summingDouble(Sale::getSalePrice)));
+        Map<String, BigDecimal> map = sales
+                .stream()
+                .collect(Collectors.toMap(Sale::getSalesmanName, Sale::getSalePrice));
 
-        if (map.size() > 0) {
-            Entry<String, Double> worstSalesman = Collections.min(map.entrySet(), Entry.comparingByValue());
-
-            return Optional.of(worstSalesman.getKey());
+        if (map.isEmpty()) {
+            return Optional.empty();
         }
-        return Optional.empty();
+
+        return Optional.ofNullable(Collections
+                .min(map.entrySet(), Entry.comparingByValue())
+                .getKey());
+
     }
 
 }

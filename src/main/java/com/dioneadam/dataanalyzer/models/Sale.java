@@ -1,39 +1,81 @@
 package com.dioneadam.dataanalyzer.models;
 
+import java.math.BigDecimal;
 import java.util.List;
 
-public class Sale {
+public class Sale implements Line {
 
-    private static final int ID = 3;
+    public static final String ID = "003";
 
-    private final int saleId;
-    private final List<Item> items;
-    private final String salesmanName;
+    private int saleId;
+    private List<Item> items;
+    private String salesmanName;
 
-    public Sale(int saleId, List<Item> items, String salesmanName) {
-        this.saleId = saleId;
-        this.items = items;
-        this.salesmanName = salesmanName;
-    }
-
-    public int getId() {
-        return ID;
-    }
-
-    public List<Item> getItems() {
-        return items;
+    @Override
+    public boolean isEquals(String id) {
+        return ID.equals(id);
     }
 
     public int getSaleId() {
         return saleId;
     }
 
+    public void setSaleId(int saleId) {
+        this.saleId = saleId;
+    }
+
+    public List<Item> getItems() {
+        return items;
+    }
+
+    public void setItems(List<Item> items) {
+        this.items = items;
+    }
+
     public String getSalesmanName() {
         return salesmanName;
     }
 
-    public Double getSalePrice() {
-        return items.stream().map(Item::getTotalPrice).mapToDouble(Double::doubleValue).sum();
+    public void setSalesmanName(String salesmanName) {
+        this.salesmanName = salesmanName;
+    }
+
+    public BigDecimal getSalePrice() {
+        return items
+                .stream()
+                .map(Item::getTotalPrice)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    public static Builder of() {
+        return new Builder();
+    }
+
+    public static final class Builder {
+        private final Sale sale;
+
+        private Builder() {
+            sale = new Sale();
+        }
+
+        public Builder saleId(int saleId) {
+            sale.setSaleId(saleId);
+            return this;
+        }
+
+        public Builder items(List<Item> items) {
+            sale.setItems(items);
+            return this;
+        }
+
+        public Builder salesmanName(String salesmanName) {
+            sale.setSalesmanName(salesmanName);
+            return this;
+        }
+
+        public Sale build() {
+            return sale;
+        }
     }
 
 }
