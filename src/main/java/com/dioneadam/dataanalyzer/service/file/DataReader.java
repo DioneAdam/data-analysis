@@ -1,4 +1,4 @@
-package com.dioneadam.dataanalyzer.service;
+package com.dioneadam.dataanalyzer.service.file;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

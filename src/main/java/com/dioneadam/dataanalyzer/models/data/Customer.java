@@ -1,4 +1,4 @@
-package com.dioneadam.dataanalyzer.models;
+package com.dioneadam.dataanalyzer.models.data;
 
 public class Customer implements Line {
 

@@ -1,8 +1,8 @@
 package com.dioneadam.dataanalyzer.parser;
 
-import com.dioneadam.dataanalyzer.models.Item;
-import com.dioneadam.dataanalyzer.models.Line;
-import com.dioneadam.dataanalyzer.models.Sale;
+import com.dioneadam.dataanalyzer.models.data.Item;
+import com.dioneadam.dataanalyzer.models.data.Line;
+import com.dioneadam.dataanalyzer.models.data.Sale;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;

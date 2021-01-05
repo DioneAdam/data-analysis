@@ -1,4 +1,4 @@
-package com.dioneadam.dataanalyzer.models;
+package com.dioneadam.dataanalyzer.models.data;
 
 import java.math.BigDecimal;
 

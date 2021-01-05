@@ -1,7 +1,7 @@
 package com.dioneadam.dataanalyzer.parser;
 
-import com.dioneadam.dataanalyzer.models.Customer;
-import com.dioneadam.dataanalyzer.models.Line;
+import com.dioneadam.dataanalyzer.models.data.Customer;
+import com.dioneadam.dataanalyzer.models.data.Line;
 
 import java.util.Optional;
 import java.util.StringTokenizer;

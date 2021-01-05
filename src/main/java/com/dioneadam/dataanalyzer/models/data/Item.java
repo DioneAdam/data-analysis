@@ -1,4 +1,4 @@
-package com.dioneadam.dataanalyzer.models;
+package com.dioneadam.dataanalyzer.models.data;
 
 import java.math.BigDecimal;
 
@@ -7,15 +7,6 @@ public class Item {
     private int id;
     private int quantity;
     private BigDecimal unityPrice;
-
-    public Item() {
-    }
-
-    public Item(int id, int quantity, BigDecimal unityPrice) {
-        this.id = id;
-        this.quantity = quantity;
-        this.unityPrice = unityPrice;
-    }
 
     public int getId() {
         return id;
@@ -50,7 +41,7 @@ public class Item {
     }
 
     public static final class Builder {
-        private Item item;
+        private final Item item;
 
         private Builder() {
             item = new Item();

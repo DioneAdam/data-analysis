@@ -1,6 +1,6 @@
 package com.dioneadam.dataanalyzer.models;
 
-public class DataAnalyse {
+public class AnalyzedData {
 
     private Integer amountOfClients;
     private Integer amountOfSalesman;
@@ -44,34 +44,34 @@ public class DataAnalyse {
     }
 
     public static final class Builder {
-        private final DataAnalyse dataAnalyse;
+        private final AnalyzedData analyzedData;
 
         private Builder() {
-            dataAnalyse = new DataAnalyse();
+            analyzedData = new AnalyzedData();
         }
 
         public Builder amountOfClients(Integer amountOfClients) {
-            dataAnalyse.setAmountOfClients(amountOfClients);
+            analyzedData.setAmountOfClients(amountOfClients);
             return this;
         }
 
         public Builder amountOfSalesman(Integer amountOfSalesman) {
-            dataAnalyse.setAmountOfSalesman(amountOfSalesman);
+            analyzedData.setAmountOfSalesman(amountOfSalesman);
             return this;
         }
 
         public Builder mostExpensiveSale(Integer mostExpensiveSale) {
-            dataAnalyse.setMostExpensiveSale(mostExpensiveSale);
+            analyzedData.setMostExpensiveSale(mostExpensiveSale);
             return this;
         }
 
         public Builder worstSalesman(String worstSalesman) {
-            dataAnalyse.setWorstSalesman(worstSalesman);
+            analyzedData.setWorstSalesman(worstSalesman);
             return this;
         }
 
-        public DataAnalyse build() {
-            return dataAnalyse;
+        public AnalyzedData build() {
+            return analyzedData;
         }
     }
 }

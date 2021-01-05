@@ -1,8 +1,8 @@
 package com.dioneadam.dataanalyzer.parser.factory;
 
-import com.dioneadam.dataanalyzer.models.Customer;
-import com.dioneadam.dataanalyzer.models.Sale;
-import com.dioneadam.dataanalyzer.models.Salesman;
+import com.dioneadam.dataanalyzer.models.data.Customer;
+import com.dioneadam.dataanalyzer.models.data.Sale;
+import com.dioneadam.dataanalyzer.models.data.Salesman;
 import com.dioneadam.dataanalyzer.parser.CustomerParser;
 import com.dioneadam.dataanalyzer.parser.Parser;
 import com.dioneadam.dataanalyzer.parser.SaleParser;

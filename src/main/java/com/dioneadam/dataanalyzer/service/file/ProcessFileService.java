@@ -1,8 +1,10 @@
-package com.dioneadam.dataanalyzer.service;
+package com.dioneadam.dataanalyzer.service.file;
 
 import com.dioneadam.dataanalyzer.configuration.AppConfig;
-import com.dioneadam.dataanalyzer.models.DataAnalyse;
-import com.dioneadam.dataanalyzer.models.DataWrapper;
+import com.dioneadam.dataanalyzer.models.AnalyzedData;
+import com.dioneadam.dataanalyzer.models.data.Line;
+import com.dioneadam.dataanalyzer.parser.FileParser;
+import com.dioneadam.dataanalyzer.service.DataAnalysisService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -22,16 +24,16 @@ public class ProcessFileService {
 
     private final DirectoryWatcher watcher;
     private final DataReader dataReader;
-    private final ParseService parseService;
+    private final FileParser fileParser;
     private final DataWriter dataWriter;
     private final DataAnalysisService dataAnalysisService;
 
     private static final Logger logger = LoggerFactory.getLogger(ProcessFileService.class);
 
-    public ProcessFileService(DirectoryWatcher watcher, DataReader dataReader, ParseService dataConverter, DataWriter dataWriter, DataAnalysisService dataAnalysisService) {
+    public ProcessFileService(DirectoryWatcher watcher, DataReader dataReader, FileParser dataConverter, DataWriter dataWriter, DataAnalysisService dataAnalysisService) {
         this.watcher = watcher;
         this.dataReader = dataReader;
-        this.parseService = dataConverter;
+        this.fileParser = dataConverter;
         this.dataWriter = dataWriter;
         this.dataAnalysisService = dataAnalysisService;
     }
@@ -61,9 +63,9 @@ public class ProcessFileService {
 
     private void analyze(File file) {
         List<String> lines = dataReader.readFile(file);
-        DataWrapper parsedData = parseService.parseLines(lines);
-        DataAnalyse dataAnalyse = dataAnalysisService.analyseData(parsedData);
-        dataWriter.writeDataReport(dataAnalyse, file.getName().replaceAll(".dat", ""));
+        List<Line> parsedData = fileParser.parseLines(lines);
+        AnalyzedData analyzedData = dataAnalysisService.getAnalyzedData(parsedData);
+        dataWriter.writeDataReport(analyzedData, file.getName().replaceAll(".dat", ""));
     }
 
     private void createDirectories() {

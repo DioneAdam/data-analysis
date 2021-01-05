@@ -1,7 +1,7 @@
 package com.dioneadam.dataanalyzer.parser;
 
-import com.dioneadam.dataanalyzer.models.Line;
-import com.dioneadam.dataanalyzer.models.Salesman;
+import com.dioneadam.dataanalyzer.models.data.Line;
+import com.dioneadam.dataanalyzer.models.data.Salesman;
 
 import java.math.BigDecimal;
 import java.util.Optional;
