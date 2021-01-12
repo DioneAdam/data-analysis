@@ -1,5 +1,7 @@
 package com.dioneadam.dataanalyzer.models;
 
+import java.util.Optional;
+
 public class AnalyzedData {
 
     private Integer amountOfClients;
@@ -37,6 +39,23 @@ public class AnalyzedData {
 
     public void setWorstSalesman(String worstSalesman) {
         this.worstSalesman = worstSalesman;
+    }
+
+    @Override
+    public String toString() {
+        return "AnalyzedData:" +
+                "\nAmount of customers: " + amountOfClients +
+                "\nAmount of salesmen: " + amountOfSalesman +
+                "\nID of the most expensive sale: " + removeNullOfText(mostExpensiveSale.toString()) +
+                "\nWorst salesman ever: " + removeNullOfText(worstSalesman);
+    }
+
+    private String removeNullOfText(String text) {
+        return text.replaceAll(" null", "");
+    }
+
+    public byte[] getBytes() {
+        return this.toString().getBytes();
     }
 
     public static Builder of() {
