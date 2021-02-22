@@ -1,26 +1,30 @@
-package com.dioneadam.dataanalyzer.service.file;
+package com.dioneadam.dataanalyzer.service;
 
 import com.dioneadam.dataanalyzer.configuration.AppConfig;
 import com.dioneadam.dataanalyzer.models.AnalyzedData;
 import com.dioneadam.dataanalyzer.models.data.Line;
 import com.dioneadam.dataanalyzer.parser.FileParser;
-import com.dioneadam.dataanalyzer.service.DataAnalysisService;
+import com.dioneadam.dataanalyzer.service.util.DataReader;
+import com.dioneadam.dataanalyzer.service.util.DataWriter;
+import com.dioneadam.dataanalyzer.service.util.DirectoryUtil;
+import com.dioneadam.dataanalyzer.service.watcher.DirectoryWatcher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.WatchEvent;
 import java.util.List;
 
 @Service
 public class ProcessFileService {
+
+    @Value("${application.features.enable-analysis-pre-existing-files}")
+    private boolean enablePreExistingFilesAnalysis;
 
     private final DirectoryWatcher watcher;
     private final DataReader dataReader;
@@ -40,41 +44,46 @@ public class ProcessFileService {
 
     @PostConstruct
     public void analyze() {
-        logger.info("initializing data analysis");
+        logger.info("Creating directories if doesn't exist");
         createDirectories();
 
-        dataReader.getAllFiles(AppConfig.INPUT_PATH).forEach(this::analyze);
-
-        logger.info("done fisrt data analysis");
+        if(enablePreExistingFilesAnalysis) {
+            analyzeAllPreExistingFiles();
+        }
     }
 
-    @Scheduled(initialDelayString = "${app.job.scheduler.delay}", fixedRateString = "${app.job.scheduler.interval}")
+    @Scheduled(initialDelayString = "${application.job.scheduler.delay}", fixedRateString = "${application.job.scheduler.interval}")
     public void handleNewOrModifyFile() {
         watcher.getNextWatchKey();
-        for (WatchEvent<?> event : watcher.getEvents()) {
-            Path path = (Path) event.context();
-            if (path.toString().endsWith(".dat")) {
-                Path filepath = Paths.get(AppConfig.INPUT_PATH.toString(), path.toString());
-                analyze(filepath.toFile());
-            }
-        }
+        watcher.getEvents()
+                .stream()
+                .map(WatchEvent::context)
+                .map(Object::toString)
+                .filter(filePath -> filePath.endsWith(AppConfig.getInputFileExtension()))
+                .map(filePath -> Paths.get(AppConfig.getInputPathAsString(), filePath))
+                .forEach(path -> analyzeFile(path.toFile()));
         watcher.resetWatchKey();
     }
 
-    private void analyze(File file) {
+    private void analyzeAllPreExistingFiles() {
+        logger.info("Starting analysis of pre-existing files");
+
+        dataReader.getAllFiles()
+                .forEach(this::analyzeFile);
+
+        logger.info("Completed first analysis!");
+    }
+
+    private void analyzeFile(File file) {
         List<String> lines = dataReader.readFile(file);
         List<Line> parsedData = fileParser.parseLines(lines);
         AnalyzedData analyzedData = dataAnalysisService.getAnalyzedData(parsedData);
-        dataWriter.writeDataReport(analyzedData, file.getName().replaceAll(".dat", ""));
+        dataWriter.writeDataReport(analyzedData, file.getName());
     }
 
     private void createDirectories() {
-        try {
-            Files.createDirectories(AppConfig.INPUT_PATH);
-            Files.createDirectories(AppConfig.OUTPUT_PATH);
-        } catch (IOException e) {
-            logger.error("error on create directories!" + e);
-        }
+        DirectoryUtil.createInputDirectory();
+        DirectoryUtil.createOutputDirectory();
     }
 
 }

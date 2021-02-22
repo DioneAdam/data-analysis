@@ -1,21 +1,21 @@
-package com.dioneadam.dataanalyzer.service.file;
+package com.dioneadam.dataanalyzer.service.watcher;
 
 import com.dioneadam.dataanalyzer.configuration.AppConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
+import org.springframework.context.annotation.Configuration;
 
 import java.io.IOException;
 import java.nio.file.*;
 import java.util.List;
 
-@Component
+@Configuration
 public class DirectoryWatcher {
-
-    private static final Logger logger = LoggerFactory.getLogger(DirectoryWatcher.class);
 
     private WatchService watchService;
     private WatchKey watchKey;
+
+    private static final Logger logger = LoggerFactory.getLogger(DirectoryWatcher.class);
 
     public DirectoryWatcher() {
         configureWatcher();
@@ -24,7 +24,8 @@ public class DirectoryWatcher {
     private void configureWatcher() {
         try {
             watchService = FileSystems.getDefault().newWatchService();
-            AppConfig.INPUT_PATH.register(watchService, StandardWatchEventKinds.ENTRY_CREATE, StandardWatchEventKinds.ENTRY_MODIFY);
+            AppConfig.getInputPath()
+                    .register(watchService, StandardWatchEventKinds.ENTRY_CREATE, StandardWatchEventKinds.ENTRY_MODIFY);
         } catch (IOException e) {
             logger.error("Error on configure watch directory", e);
         }

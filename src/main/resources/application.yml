@@ -1,5 +1,17 @@
-app:
+spring:
+  application:
+    name: data-analyzer
+application:
   job:
     scheduler:
       delay: 5000
       interval: 5000
+  directory:
+    input: ${user.home}/data/in
+    output: ${user.home}/data/out
+  file:
+    extension:
+      input: .dat
+      output: .done.dat
+  features:
+    enable-analysis-pre-existing-files: false

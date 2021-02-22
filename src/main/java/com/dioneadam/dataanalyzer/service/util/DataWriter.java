@@ -1,4 +1,4 @@
-package com.dioneadam.dataanalyzer.service.file;
+package com.dioneadam.dataanalyzer.service.util;
 
 import com.dioneadam.dataanalyzer.configuration.AppConfig;
 import com.dioneadam.dataanalyzer.models.AnalyzedData;
@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 
 @Component
 public class DataWriter {
@@ -17,7 +16,9 @@ public class DataWriter {
     private static final Logger logger = LoggerFactory.getLogger(DataWriter.class);
 
     public void writeDataReport(AnalyzedData analyzedData, String file) {
-        Path path = Paths.get(AppConfig.OUTPUT_PATH.toString(), String.format(AppConfig.OUTPUT_FILENAME, file));
+        String fileName = file.replaceAll(AppConfig.getInputFileExtension(), "");
+        String analyzedFileName = fileName + AppConfig.getOutputFileExtension();
+        Path path = AppConfig.getOutputPath().resolve(analyzedFileName);
         try {
             Files.write(path, analyzedData.getBytes());
         } catch (IOException e) {

@@ -7,7 +7,7 @@ public class Sale implements Line {
 
     public static final String ID = "003";
 
-    private int saleId;
+    private Integer saleId;
     private List<Item> items;
     private String salesmanName;
 
@@ -16,11 +16,11 @@ public class Sale implements Line {
         return ID.equals(id);
     }
 
-    public int getSaleId() {
+    public Integer getSaleId() {
         return saleId;
     }
 
-    public void setSaleId(int saleId) {
+    public void setSaleId(Integer saleId) {
         this.saleId = saleId;
     }
 
@@ -58,7 +58,7 @@ public class Sale implements Line {
             sale = new Sale();
         }
 
-        public Builder saleId(int saleId) {
+        public Builder saleId(Integer saleId) {
             sale.setSaleId(saleId);
             return this;
         }

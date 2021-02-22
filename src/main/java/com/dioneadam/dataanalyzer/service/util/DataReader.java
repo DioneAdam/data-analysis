@@ -1,5 +1,6 @@
-package com.dioneadam.dataanalyzer.service.file;
+package com.dioneadam.dataanalyzer.service.util;
 
+import com.dioneadam.dataanalyzer.configuration.AppConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -26,15 +27,15 @@ public class DataReader {
         }
     }
 
-    public List<File> getAllFiles(Path path) {
+    public List<File> getAllFiles() {
         try {
-            return Files.walk(path)
+            return Files.walk(AppConfig.getInputPath())
                     .filter(Files::isRegularFile)
-                    .filter(file -> file.toString().endsWith(".dat"))
+                    .filter(file -> file.toString().endsWith(AppConfig.getInputFileExtension()))
                     .map(Path::toFile)
                     .collect(Collectors.toList());
         } catch (IOException e) {
-            logger.error("Error on get file list from " + path);
+            logger.error("Error on get file list from " + AppConfig.getInputPathAsString());
         }
         return new ArrayList<>();
     }

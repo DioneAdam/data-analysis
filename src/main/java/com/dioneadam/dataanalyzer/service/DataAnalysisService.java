@@ -1,6 +1,6 @@
 package com.dioneadam.dataanalyzer.service;
 
-import com.dioneadam.dataanalyzer.models.*;
+import com.dioneadam.dataanalyzer.models.AnalyzedData;
 import com.dioneadam.dataanalyzer.models.data.Customer;
 import com.dioneadam.dataanalyzer.models.data.Line;
 import com.dioneadam.dataanalyzer.models.data.Sale;
@@ -8,7 +8,9 @@ import com.dioneadam.dataanalyzer.models.data.Salesman;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -29,26 +31,21 @@ public class DataAnalysisService {
     }
 
     private Integer findMostExpensiveSaleId(List<Sale> salesList) {
-        salesList.sort(Comparator.comparing(Sale::getSalePrice).reversed());
-        if (salesList.size() > 0) {
-            return Optional.of(salesList.get(0).getSaleId()).orElse(null);
-        }
-        return null;
+        return salesList.stream()
+                .max(Comparator.comparing(Sale::getSalePrice))
+                .orElse(Sale.of().saleId(null).build())
+                .getSaleId();
     }
 
     private String findWorstSalesmanEver(List<Sale> salesList) {
-        Map<String, BigDecimal> map = salesList
+        return salesList
                 .stream()
-                .collect(Collectors.toMap(Sale::getSalesmanName, Sale::getSalePrice));
-
-        if (map.isEmpty()) {
-            return null;
-        }
-
-        return Optional.ofNullable(Collections
-                .min(map.entrySet(), Map.Entry.comparingByValue())
-                .getKey())
-                .orElse(null);
+                .collect(Collectors.toMap(Sale::getSalesmanName,Sale::getSalePrice, BigDecimal::add))
+                .entrySet()
+                .stream()
+                .min(Map.Entry.comparingByValue())
+                .orElse(Map.entry("", new BigDecimal(0)))
+                .getKey();
     }
 
     private <E> List<E> getDataListFromModelClass(List<Line> parsedModels, Class<E> modelClass) {
