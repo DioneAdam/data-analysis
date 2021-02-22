@@ -14,4 +14,4 @@ application:
       input: .dat
       output: .done.dat
   features:
-    enable-analysis-pre-existing-files: false
+    enable-analysis-pre-existing-files: true
